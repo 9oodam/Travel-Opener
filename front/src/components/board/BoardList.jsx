@@ -42,10 +42,14 @@ const BoardList = ({ id }) => {
             navigate(`/boarddetail/${value.id}`);
           };
 
-          let profileImg = value.User;
-          if(value.User == null) {
-            profileImg = 'default_profile.jpeg'
-          }
+          let profileImg;
+          let nickname;
+          value.UserAll.map((item, index) => {
+            if(value.user_id == item.id) {
+              profileImg = item.profile_img
+              nickname = item.nickname
+            }
+          })
 
           return (
             <>
@@ -58,7 +62,7 @@ const BoardList = ({ id }) => {
                   <div>
                     <SmallText>
                       {/* <span>{nickname}</span>님의 일정 */}
-                      <span>{value.nickname}</span>
+                      <span>{nickname}</span>
                     </SmallText>
                   </div>
                   <SubTitle>{value.title}</SubTitle>
