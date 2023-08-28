@@ -132,15 +132,20 @@ const BoardListPc = () => {
       <Div_two>
       {data ? (
         data.map((value, index) => {
+          console.log(value);
           const thumbNail = JSON.parse(value.images)[0];
           const handleReviewClick = () => {
             nav(`/boarddetail/${value.id}`);
           };
 
-          let profileImg = value.User;
-          if(value.User == null) {
-            profileImg = 'default_profile.jpeg'
-          }
+          let profileImg;
+          let nickname;
+          value.UserAll.map((item, index) => {
+            if(value.user_id == item.id) {
+              profileImg = item.profile_img
+              nickname = item.nickname
+            }
+          })
 
           const dateTimeString = value.createdAt;
           const datePart = dateTimeString.match(/^\d{4}-\d{2}-\d{2}/)[0];
@@ -155,7 +160,7 @@ const BoardListPc = () => {
                 <TextBox>
                     <SmallText>
                       {/* <span>{nickname}</span>님의 일정 */}
-                      <span>{value.nickname}</span>
+                      <span>{nickname}</span>
                     </SmallText>
                   <SubTitle>{value.title}</SubTitle>
                   <div className='create-date'>{datePart}</div>

@@ -4,8 +4,9 @@ const { User, Board, Comment, Recomment, LikeBoard, LikeComment } = require("../
 exports.allBoard = async (req, res) => {
     try {
         const temp = await Board.findAll({ include: [{ model: User }] })
+        const temp2 = await User.findAll();
         const data = temp.map((value) => {
-            return { ...value.dataValues, User: value.dataValues.User.profile_img }
+            return { ...value.dataValues, User: value.dataValues.User.profile_img, UserAll: temp2 }
         })
         res.json(data)
     } catch (error) {
