@@ -87,7 +87,7 @@ function App() {
           // console.log('asd')
         } else {
           console.log(data);
-          dispatch(saveUser(data));
+          // dispatch(saveUser(data));
         }
       },
       staleTime: 600000,

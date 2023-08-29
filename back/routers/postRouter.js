@@ -38,7 +38,8 @@ const {
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join("..", "front", "public", "imgs", "userplanimg"));
+    // cb(null, path.join("..", "front", "public", "imgs", "userplanimg"));
+    cb(null, path.join(__dirname, "..", "..", "front", "build", "imgs", "userplanimg"));
   },
   filename: function (req, file, cb) {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
