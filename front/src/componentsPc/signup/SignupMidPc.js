@@ -115,7 +115,7 @@ const SignupMid = ({ page }) => {
   const dupChk2Mutation = useMutation(dupChk2);
   // 회원가입 axios zerohoney
   const signUp = async () => {
-    const signUpResult = await ipUrl.post("https://hyunss.com:8000/user/signUp", {
+    const signUpResult = await ipUrl.post("https://hyunss.com:8080/user/signUp", {
       user_id,
       user_pw,
       nickname,
