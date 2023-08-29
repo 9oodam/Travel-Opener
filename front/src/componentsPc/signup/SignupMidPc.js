@@ -51,7 +51,7 @@ const SignupMid = ({ page }) => {
     } else {
       // useMutation 사용해서 axios post 보내기
       // const data = useMutation();
-      const duplicateIdResult = await ipUrl.post("https://hyunss.com:8080/user/duplicateId", {
+      const duplicateIdResult = await ipUrl.post("/user/duplicateId", {
         user_id,
       });
 
@@ -86,7 +86,7 @@ const SignupMid = ({ page }) => {
       // useMutation 사용해서 axios post 보내기
 
       const duplicateNickNameResult = await ipUrl.post(
-        "https://hyunss.com:8080/user/duplicateNickName",
+        "/user/duplicateNickName",
         {
           nickname,
         }
