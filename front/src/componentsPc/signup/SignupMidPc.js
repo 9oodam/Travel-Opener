@@ -51,7 +51,7 @@ const SignupMid = ({ page }) => {
     } else {
       // useMutation 사용해서 axios post 보내기
       // const data = useMutation();
-      const duplicateIdResult = await ipUrl.post("/user/duplicateId", {
+      const duplicateIdResult = await ipUrl.post("https://hyunss.com:8000/user/duplicateId", {
         user_id,
       });
 
@@ -86,7 +86,7 @@ const SignupMid = ({ page }) => {
       // useMutation 사용해서 axios post 보내기
 
       const duplicateNickNameResult = await ipUrl.post(
-        "/user/duplicateNickName",
+        "https://hyunss.com:8000/user/duplicateNickName",
         {
           nickname,
         }
@@ -115,7 +115,7 @@ const SignupMid = ({ page }) => {
   const dupChk2Mutation = useMutation(dupChk2);
   // 회원가입 axios zerohoney
   const signUp = async () => {
-    const signUpResult = await ipUrl.post("/user/signUp", {
+    const signUpResult = await ipUrl.post("https://hyunss.com:8000/user/signUp", {
       user_id,
       user_pw,
       nickname,
@@ -144,7 +144,7 @@ const SignupMid = ({ page }) => {
     }
 
     const loginClick = await ipUrl.post(
-      "/user/login",
+      "https://hyunss.com:8000/user/login",
       {
         user_id,
         user_pw,

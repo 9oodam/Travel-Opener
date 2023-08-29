@@ -74,6 +74,6 @@ const createAdminUser = async () => {
     });
   }
 };
-createAdminUser();
+createAdminUser(); // 여기임
 
 module.exports = db;

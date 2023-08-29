@@ -59,16 +59,16 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    // origin: ["http://13.125.126.65"],
     origin: [
-      "http://localhost:3000",
-      "http://127.0.0.1:8080",
-      "http://52.79.43.68",
-      "http://localhost:8080",
-      "http://127.0.0.1:5500",
-      "https://zerohoney.com",
-      "http://zerohoney.com",
-      "https://zerohoney.site",
+      "https://hyunss.com",
+      // "http://localhost:3000",
+      // "http://127.0.0.1:8080",
+      // "http://52.79.43.68",
+      // "http://localhost:8080",
+      // "http://127.0.0.1:5500",
+      // "https://zerohoney.com",
+      // "http://zerohoney.com",
+      // "https://zerohoney.site",
     ],
     credentials: true,
   })
@@ -112,7 +112,7 @@ app.use("/board", boardEditRouter);
 app.use("/openAI", testGPT);
 // 플랜을 저장하고 관리하는 라우터
 app.use("/plan", planRouter);
-const server = app.listen(8080, () => {
+const server = app.listen(8000, () => {
   console.log("server on");
 });
 
