@@ -51,7 +51,7 @@ const SignupMid = ({ page }) => {
     } else {
       // useMutation 사용해서 axios post 보내기
       // const data = useMutation();
-      const duplicateIdResult = await ipUrl.post("https://hyunss.com:8000/user/duplicateId", {
+      const duplicateIdResult = await ipUrl.post("https://hyunss.com:8080/user/duplicateId", {
         user_id,
       });
 
@@ -86,7 +86,7 @@ const SignupMid = ({ page }) => {
       // useMutation 사용해서 axios post 보내기
 
       const duplicateNickNameResult = await ipUrl.post(
-        "https://hyunss.com:8000/user/duplicateNickName",
+        "https://hyunss.com:8080/user/duplicateNickName",
         {
           nickname,
         }
@@ -144,7 +144,7 @@ const SignupMid = ({ page }) => {
     }
 
     const loginClick = await ipUrl.post(
-      "https://hyunss.com:8000/user/login",
+      "https://hyunss.com:8080/user/login",
       {
         user_id,
         user_pw,
