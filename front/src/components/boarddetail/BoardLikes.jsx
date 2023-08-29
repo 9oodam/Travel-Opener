@@ -1,42 +1,60 @@
-import React, { useEffect, useState } from 'react'
-import { LikeSize2 } from './boarddetail.styled'
+import React, { useEffect, useState } from 'react';
+import { LikeSize2 } from './boarddetail.styled';
 import { ipUrl } from '../../util/util';
-const BoardLikes = ({board_id}) =>{
-    const ImgPath = "/imgs/icons"
-    const [boardLikes, setBoardLikes] = useState(false)
 
+const BoardLikes = ({ boardIndex,boardLikeArr ,loginUserInfo,refetch}) => {
+  const ImgPath = "/imgs/icons";
+  const [boardLikes, setBoardLikes] = useState(false);
+const duplicateLike=()=>{
 
+  if (boardLikeArr.indexOf(loginUserInfo.id) ===-1) {
+    console.log(loginUserInfo.id,'참')
+    return true
+  }else{
+    console.log(loginUserInfo.id,'거짓')
+    return false
+  }
 
-    const LikesClick =async()=>{
-      try {
-        const response = await ipUrl.post(
-            // `/post/updateLikes`,{comment_id:commentIndex},{withCredentials:true}
-            )
-      } catch (error) {
-        
+}
+
+useEffect(()=>{
+  if (duplicateLike()) {
+    setBoardLikes(false)
+  }else{
+    setBoardLikes(true)
+
+  }
+
+},[boardLikeArr])
+  const LikesClick = async () => {
+    try {
+      if (!boardLikes) {
+        await ipUrl.post(
+          `/post/updateboardlikes/${boardIndex}`,
+          { board_id: boardIndex },
+          { withCredentials: true }
+        );
+        refetch()
+       // setBoardLikes(true); // 좋아요 추가 시 상태를 true로 업데이트
+      } else {
+        await ipUrl.get(`/post/deleltboardlikes/${boardIndex}`, { withCredentials: true });
+        refetch()
+    //    setBoardLikes(false); // 좋아요 삭제 시 상태를 false로 업데이트
       }
-      setBoardLikes(!boardLikes);
-
+    } catch (error) {
+      console.log(error);
     }
-
-
-    // 해당 user_id가 좋아요한 comment_id에 대한 likes 보이기
-     const LikesView = async()=>{
-
-     }
-     // 좋아요 등록, 해제
-     const updateLikes = async()=>{
-      
-     
-     }
+  };
 
   return (
     <div>
-        <LikeSize2 onClick={LikesClick}  
+      <LikeSize2
+        onClick={LikesClick}
         src={boardLikes ? `${ImgPath}/like3.png` : `${ImgPath}/like1.png`}
-         alt="" />
+        alt=""
+      />
     </div>
-  )
-}
+  );
+};
 
-export default BoardLikes
+export default BoardLikes;

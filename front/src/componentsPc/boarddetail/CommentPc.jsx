@@ -1,21 +1,33 @@
-import React, { useState } from 'react'
-import { CommentContainer } from './boarddetailPc.styled'
-import {CommentListPc,CommentFormPc} from './index'
+import React, { useState } from "react";
+import { CommentContainer } from "./boarddetailPc.styled";
+import { CommentListPc, CommentFormPc } from "./index";
+import { CommentMain } from "../../components/boarddetail/boarddetail.styled";
+import { CommentMainPc } from "./boarddetailPc.styled";
 
-const CommentPc = () => {
-  const [comment,setComment]=useState([])
+const CommentPc = ({ comments, setTrigger, loginUserInfo, refetch }) => {
+  console.log(comments);
 
-  const CommentSubmit = (newComment) => {
-    setComment([...comment, newComment]);
-  };
+  const CommentSubmit = () => {};
+
   return (
     <>
       <CommentContainer>
-        <CommentListPc comments={comment}/>
-        <CommentFormPc onCommentSubmit={CommentSubmit}/>
+        <CommentMainPc>
+          <CommentListPc
+            comments={comments}
+            loginUserInfo={loginUserInfo}
+            refetch={refetch}
+            setTrigger={setTrigger}
+          />
+        </CommentMainPc>
+
+        <CommentFormPc
+          onCommentSubmit={CommentSubmit}
+          setTrigger={setTrigger}
+        />
       </CommentContainer>
     </>
-  )
-}
+  );
+};
 
-export default CommentPc
+export default CommentPc;

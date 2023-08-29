@@ -11,6 +11,10 @@ const Main = styled.div`
     cursor: pointer;
     position: relative;
     margin: 10px;
+
+    &:hover {
+        transform: scale(101%);
+    }
 `
 const ImgBox = styled.div`
 width: 350px;

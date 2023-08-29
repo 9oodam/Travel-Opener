@@ -15,7 +15,6 @@ const Board = () => {
         <>
             <BoardMain>
                 <BoardTitle />
-                <BoardSubTitle />
                 <BoardList/>
                 <BottomBox/>
             </BoardMain>

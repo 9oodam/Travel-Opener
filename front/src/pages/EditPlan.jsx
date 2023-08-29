@@ -43,7 +43,7 @@ const EditPlan = () => {
     attraction.map((value, index) => {
       let arr = attraction.filter((item) => item.day == index + 1);
       if (arr.length !== 0) {
-        console.log(arr,'준파이널')
+        console.log(arr, "준파이널");
         finalArr.push(arr);
       }
     });
@@ -82,6 +82,7 @@ const EditPlan = () => {
             gptAnswerSaved={gptAnswerSaved}
             page={"plan"}
             selectedPlanIndex={selectedPlanIndex}
+            userChoiceSaved={userChoiceSaved}
           />
           <PlanBottomX
             isScrolled={isScrolled}

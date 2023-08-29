@@ -3,6 +3,7 @@ import axios from "axios";
 import { CommentFormdiv, CommentInput, CommentBtn } from "./boarddetail.styled";
 import { useParams } from "react-router-dom";
 import { ipUrl } from "../../util/util";
+import { useMutation } from "react-query";
 
 const CommentForm = ({ onCommentSubmit, setTrigger }) => {
   const [inputComment, setInputComment] = useState("");
@@ -30,20 +31,22 @@ const CommentForm = ({ onCommentSubmit, setTrigger }) => {
       console.log(error);
     }
   };
+
+  const handleSubmitMutation = useMutation("commentSubmit", handleSubmit);
   return (
     <>
       <CommentFormdiv>
-        <form onSubmit={handleSubmit}>
-          <span>
-            <CommentInput
-              type="text"
-              value={inputComment}
-              onChange={(e) => setInputComment(e.target.value)}
-              placeholder="댓글을 입력해주세요"
-            />
-            <CommentBtn>등록</CommentBtn>
-          </span>
-        </form>
+        <span>
+          <CommentInput
+            type="text"
+            value={inputComment}
+            onChange={(e) => setInputComment(e.target.value)}
+            placeholder="댓글을 입력해주세요"
+          />
+          <CommentBtn onClick={(e) => handleSubmitMutation.mutate(e)}>
+            등록
+          </CommentBtn>
+        </span>
       </CommentFormdiv>
     </>
   );

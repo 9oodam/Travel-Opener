@@ -142,6 +142,9 @@ const BoardListPc = () => {
             profileImg = 'default_profile.jpeg'
           }
 
+          const dateTimeString = value.createdAt;
+          const datePart = dateTimeString.match(/^\d{4}-\d{2}-\d{2}/)[0];
+
           return (
             <>
               <Main onClick={handleReviewClick}>
@@ -150,13 +153,12 @@ const BoardListPc = () => {
                 </ImgBox>
                 <ProflieImg src={profileImgPath + "/" + profileImg} />
                 <TextBox>
-                  <div>
                     <SmallText>
                       {/* <span>{nickname}</span>님의 일정 */}
-                      <span>{value.nickname}</span>님의 일정
+                      <span>{value.nickname}</span>
                     </SmallText>
-                  </div>
                   <SubTitle>{value.title}</SubTitle>
+                  <div className='create-date'>{datePart}</div>
                 </TextBox>
               </Main>
             </>

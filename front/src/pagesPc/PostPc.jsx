@@ -73,6 +73,7 @@ const PostPc = () => {
           name="title"
           placeholder="제목을 입력하세요"
           onChange={handleTitleChange}
+          maxLength={100}
         />
         <PostContentPc
           type="text"

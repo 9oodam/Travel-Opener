@@ -1,10 +1,10 @@
 import React from 'react'
 import { SubContentStyle } from './boarddetailPc.styled'
 
-const SubContentPc = () => {
+const SubContentPc = ({detail}) => {
   return (
     <div>
-        <SubContentStyle>유저가 적고싶은 내용</SubContentStyle>
+        <SubContentStyle>{detail}</SubContentStyle>
      </div>
   )
 }

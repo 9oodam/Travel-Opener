@@ -1,10 +1,10 @@
 import React from "react";
 import { TitleStyle } from "./boarddetailPc.styled";
 
-const TitlePc = () => {
+const TitlePc = ({title}) => {
   return (
     <>
-      <TitleStyle>여행 리뷰 타이틀</TitleStyle>
+      <TitleStyle>{title}</TitleStyle>
     </>
   );
 };

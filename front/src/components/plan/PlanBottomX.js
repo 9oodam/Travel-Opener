@@ -97,9 +97,7 @@ const PlanBottomX = ({
   }, [attractions]);
 
   const planPerDay = userChoiceSaved;
-  useEffect(() => {
-    console.log(userChoiceSaved);
-  }, [userChoiceSaved]);
+
   // 스크롤 일정 이상 넘어가면
   useEffect(() => {
     const bottomBox = document.getElementById("bottom-box");
@@ -116,14 +114,16 @@ const PlanBottomX = ({
       <PlanBottomBox id="bottom-box">
         {periodArr.map((value, index) => {
           if (planPerDay.length > index) {
+            console.log(planPerDay[index][0].day, "데이");
             return (
               <PerDay
                 key={index}
                 period={periodArr[index]}
-                index={index + 1}
+                index={planPerDay[index][0].day}
                 place={planPerDay[index]}
                 attractionsWithImg={attractionsWithImg}
                 setSelectedPlanIndex={setSelectedPlanIndex}
+                userChoiceSaved={userChoiceSaved}
               />
             );
           } else {
@@ -142,6 +142,7 @@ const PerDay = ({
   place,
   attractionsWithImg,
   setSelectedPlanIndex,
+  userChoiceSaved,
 }) => {
   const [dayPlanArr, setDayPlanArr] = useState([]);
   const noImage = "/img/icons/no-image.png";
@@ -154,8 +155,8 @@ const PerDay = ({
 
   // 해당하는 날짜를 찾고  그 plan을dayPlanArr에 저장하는 함수
   useEffect(() => {
-    const temp = selectedUserPlan.filter((el) => {
-      return parseInt(el.day) === parseInt(index);
+    const temp = userChoiceSaved.filter((el) => {
+      return parseInt(el[0].day) === parseInt(index);
     });
     setDayPlanArr(temp);
   }, [selectedUserPlan]);
@@ -167,12 +168,13 @@ const PerDay = ({
     <>
       <PerDayBox
         onClick={() => {
+          console.log("퍼데이 눌림", dayPlanArr);
           // SelectedPlanIndex는 누른 index를 따라간다. 하지만 plan은 유저가 저장을 한 날만 채워진다. 예를들어
           // 1,3,5일을 유저가 계획을 세웠다면 plan의 array는 length가 3이고, index(1)은 두번째 날이다.
           // 하지만 아래 코드에서 두번째 계획을 누르면 index가 1이 되고 plan의 인덱스 1을 찾는다. 즉, 두번째 날을 클릭하면
           // 세번째날이 출력되는 버그 발생. 이를 방지하기위해 index가 아니라 day를 넘겨줘 PlanMid에서 findIndex로 해당하는 day의 index를 찾는다.
           if (dayPlanArr.length !== 0) {
-            setSelectedPlanIndex(dayPlanArr[0].day);
+            setSelectedPlanIndex(dayPlanArr[0][0].day);
           }
         }}
       >

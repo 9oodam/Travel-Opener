@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 const PostTitle = styled.input`
   color: rgb(58, 58, 58);
-  width: 90%; 
+  width: 350px; 
   height: 35px; 
   padding: 10px;
   border: 2px solid #ccc; 
@@ -14,10 +14,8 @@ const PostTitle = styled.input`
   letter-spacing: 0px;
   outline: none;
   margin-top: 15px;
-
-  &:focus {
-    border-color: #007bff; /* 포커스 시 테두리 색 변경 */
-  }
+  outline: none;
+  box-sizing: border-box;
 `;
 const PostContent = styled.textarea`
  margin-top: 15px;
@@ -31,24 +29,26 @@ const PostContent = styled.textarea`
   padding: 10px; 
   resize: vertical; 
   outline: none;
+  resize: none;
+  box-sizing: border-box;
 `
 const PostPlanContainer = styled.div`
 width: 400px;
 height: 600px;
 `
-const PostBtn = styled.button`
-    width: 150px;
-    height: 50px;
-    float: none;
-    font-weight: bold;
-    text-align: center;
-    font-size: 14px;
-    border-radius: 4px;
-    padding: 7px 12px;
-    border: 1px solid rgb(54, 143, 255);
-    background-color: rgb(54, 143, 255);
-    color: white;
-    margin-top: 10px;
+const PostBtn = styled.div`
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  width: 250px;
+  height: 50px;
+  text-align: center;
+  border-radius: 5px;
+  background-color: #277bc0;
+  color: white;
+  font-weight: bold;
+  margin-top: 10px;
+  display: flex; justify-content: center; align-items: center;
+  cursor: pointer;
 `
 const UploadImgContain = styled.div`
 position: relative;

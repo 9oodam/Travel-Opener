@@ -4,7 +4,14 @@ export const PerDayBox = styled.div`
   width: 100%;
   height: auto;
   position: relative;
-  padding: 30px 0 30px 0;
+  padding: 30px 10px 20px 10px;
+  margin: 0 0 10px 0;
+  box-sizing: border-box;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 `;
 export const PerDayDate = styled.div`
   width: 100%;
@@ -12,6 +19,7 @@ export const PerDayDate = styled.div`
   position: absolute;
   top: 0;
   display: flex;
+  padding: 10px 0 10px 0;
 
   & p {
     margin: 0;
@@ -28,6 +36,7 @@ export const PerDayAttraction = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
+
 `;
 export const RouteBox = styled.div`
   width: 100%;
@@ -243,6 +252,7 @@ export const NoPlanBtns = styled.div`
   align-items: center;
   flex-direction: row;
   flex-wrap: wrap;
+  cursor: pointer;
 `;
 export const NoPlanBtn = styled.div`
   width: 220px;

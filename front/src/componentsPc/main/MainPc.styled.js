@@ -12,6 +12,7 @@ export const MainTopBox = styled.div`
   align-items: center;
   margin: 0 0 20px 0;
   border: 3px solid white;
+  position: relative;
 `;
 
 export const LogoBox = styled.div`
@@ -32,10 +33,10 @@ export const TextBox = styled.div`
   display: flex;
   /* flex-wrap: wrap; */
   margin: 0 0 20px 0;
-  height: 80vh;
+  height: auto;
 
   & img {
-    width: 80%; height: 80%;
+    width: 80%; height: auto;
   }
 `;
 
@@ -50,6 +51,8 @@ export const InputBox = styled.div`
   padding: 0 30px 0 30px;
   box-sizing: border-box;
   margin: 0px 0 20px 0;
+  position: absolute;
+  bottom: 20px;
 
   & img {
     width: 20px;
@@ -113,7 +116,7 @@ export const DateBox = styled.div`
   border: 1px solid silver;
   border-radius: 20px;
   padding: 0 10px 0 10px;
-  
+
   & input {
     width: 100%;
     border: none;
@@ -124,7 +127,7 @@ export const DateBox = styled.div`
 
 export const MainBottomBox = styled.div`
   width: 100%;
-  height: 40vh;
+  height: auto;
   padding: 10px;
   box-sizing: border-box;
   display: flex;
@@ -174,13 +177,12 @@ export const Select = styled.div`
 export const BtnBox = styled.div`
   width: 100%;
   height: 40px;
-  /* padding: 10px 30px 10px 30px; */
+  padding: 10px 30px 100px 30px;
   box-sizing: border-box;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  margin-top: 20px;
-  margin-right: 15%;
+  margin: 20px 15% 60px 0;
 `;
 export const MakePlanBtn = styled.div`
   padding: 15px;
@@ -206,7 +208,4 @@ export const LoadingContainer = styled.div`
   z-index: 2;
 `;
 
-export const LoadingImg=styled.div`
-
-
-`
+export const LoadingImg = styled.div``;

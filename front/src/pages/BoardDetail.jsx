@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery, useQueryClient } from "react-query";
 import {
@@ -13,7 +13,7 @@ import {
   HeaderDiv,
   EditBtnStyle,
   DelBtnStyle,
-  SubContentSpan
+  SubContentSpan,
 } from "../components/boarddetail/boarddetail.styled";
 import {
   ImgSlice,
@@ -23,53 +23,47 @@ import {
   BoardPlan,
   Comment,
   BoardLikes,
+  Title,
 } from "../components/boarddetail";
 import BottomNav from "../components/nav/BottomNav";
 import { create } from "../redux/features/post";
 import { ipUrl } from "../util/util";
+import TopNav from "../components/nav/TopNav";
+import { ImgSlicePc } from "../componentsPc/boarddetail";
 
 const BoardDetail = () => {
   // const [data, setData] = useState("");
   const [trigger, setTrigger] = useState(false);
   const [popup, setPopup] = useState(false);
   const [showBox, setShowBox] = useState(false);
-  // const [currentUser, setCurrentUser] = useState(null);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const loginUserInfo = useSelector((state) => state.userInfoHandler);
   const ImgPath = "/imgs/icons";
 
   const boardEditClick = () => {
     navigate(`/boardedit/${id}`);
   };
-
   const BoardDetailView = async ({ queryKey }) => {
     try {
       console.log(queryKey);
       const response = await ipUrl.get(`/post/detail/${queryKey[1]}`);
       // setData(response.data);
-      console.log(response.data);
-      return response.data;
+      console.log("fffff", response.data);
+      const data = response.data;
+      console.log("66666666666", data.data);
+      return data;
     } catch (error) {
       console.log(error);
     }
   };
-  const likesView = async ({ queryKey }) => {
-    try {
-      const response = await ipUrl.get(`/post/likeslist/${queryKey[1]}`);
-      console.log(response.data);
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   const { data, isLoading, refetch } = useQuery(
     ["boardDetail", id],
     BoardDetailView
   );
-
-  const likeData = useQuery(["commentLikes", id], likesView);
 
   const boardDelet = async () => {
     try {
@@ -84,7 +78,7 @@ const BoardDetail = () => {
     }
   };
   const handleDeleteCheck = () => {
-    const check = window.confirm("정말로 게시글을 삭제하실건가요??");
+    const check = window.confirm("게시글을 삭제하시겠습니까?");
     if (check) {
       boardDelet();
     }
@@ -99,59 +93,73 @@ const BoardDetail = () => {
   }, [data]);
 
   useEffect(() => {
-    refetch()
+    refetch();
+    console.log('ddd몹')
   }, [trigger]);
 
   const DayBtnClick = () => {
     setPopup(true);
   };
   const ShowboxClick = () => {
-    setShowBox(true);
+    setShowBox(!showBox);
   };
   const XClick = () => {
     setShowBox(false);
   };
-  // 글을 쓴 유저만 편집 아이콘이 보이게
-  // const writer = currentUser && data && currentUser.id === data.data.user_id;
 
   return (
-    <div>
-      <HeaderDiv>
-        travel opener 리뷰 게시판
-        <BoardLikes board_id={id} />
-        <ButtonBox onClick={ShowboxClick}>
-          <EditImg src={`${ImgPath}/more.png`} alt="" srcset="" />
-        </ButtonBox>
-        {showBox && (
-          <ShowButtonBox onClose={() => setShowBox(false)}>
-            <div>
-              <EditBtnStyle onClick={boardEditClick}>수정</EditBtnStyle>
-              <DelBtnStyle onClick={handleDeleteCheck}>삭제</DelBtnStyle>
-            </div>
-          </ShowButtonBox>
-        )}
-      </HeaderDiv>
+    <>
+      <TopNav />
       {data && (
-        <Main onClick={XClick}>
-          <ImgSlice />
-          <SubContentSpan>작성자 : {data.data.nickname}</SubContentSpan>
-          <TitleStyle>Title : {data.data.title}</TitleStyle>
-          <SubContentStyle>
-            <SubContentSpan>{data.data.detail}</SubContentSpan>
-          </SubContentStyle>
-          {/* <div>
-            <DayBtn DayBtnClick={DayBtnClick} />
-            <PlanBtn />
-          </div> */}
-          {popup && <DayPopup onClose={() => setPopup(false)} />}
-          <br/>
-          comments
-          <Comment comments={data.commentdata}  setTrigger={setTrigger}/>
-          <BoardLine />
+        <>
+          <Main>
+            <HeaderDiv>
+              <BoardLikes
+                boardIndex={data.data.id}
+                boardLikeArr={data.data.LikeBoards}
+                loginUserInfo={loginUserInfo}
+                refetch={refetch}
+              />
+              <div className="likesNum">{data.data.LikeBoards.length}</div>
+
+              {loginUserInfo.id === data.data.user_id && (
+                <ButtonBox onClick={ShowboxClick}>
+                  <EditImg src={`${ImgPath}/more.png`} alt="" srcset="" />
+                </ButtonBox>
+              )}
+              {showBox && (
+                <ShowButtonBox onClose={() => setShowBox(false)}>
+                  <EditBtnStyle onClick={boardEditClick}>수정</EditBtnStyle>
+                  <DelBtnStyle onClick={handleDeleteCheck}>삭제</DelBtnStyle>
+                </ShowButtonBox>
+              )}
+            </HeaderDiv>
+
+            {/* 게시글 쓴 유저 */}
+            <div className="writer-box">
+              <div className="profile_img">
+                <img src={`/imgs/profiles/${data.writer.profile_img}`}></img>
+              </div>
+              <div className="nickname">{data.writer.nickname}</div>
+            </div>
+
+            <ImgSlice images={JSON.parse(data.data.images)} />
+
+            <div className="title">{data.data.title}</div>
+            <div className="detail">{data.data.detail}</div>
+
+            <Comment
+              comments={data.commentdata}
+              setTrigger={setTrigger}
+              loginUserInfo={loginUserInfo}
+              refetch={refetch}
+            />
+          </Main>
+
           <BottomNav />
-        </Main>
+        </>
       )}
-    </div>
+    </>
   );
 };
 

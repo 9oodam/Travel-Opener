@@ -13,35 +13,49 @@ import styled from 'styled-components';
 
 `
 const ImgBox = styled.div`
-width: 350px;
-display: grid;
+width: 100%;
+display: grid; justify-content: center; align-items: center;
 gap: 1px;
 height: 150px;
 border-top-left-radius:10px;
 border-top-right-radius:10px;
-
+overflow: hidden;
 `
 const ShowImg = styled.img`
-width: 350px;
-height: 250px;
+width: 100%;
+height: auto;
 border-top-left-radius:10px;
 border-top-right-radius:10px;
 z-index: -1;
 `
 const Container = styled.div`
-display: flex;
-margin-left: 20px;
+height: 80px;
+display: flex; flex-direction: column;
+align-items: start; justify-content: center;
+padding: 0 30px 0 20px;
+box-sizing: border-box;
+
+& h3 {
+    margin: 0;
+}
+& p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
 `
 const MovePost = styled.div`
 position: absolute;
 right: 10%;
-top: 4%;
+top: 3%;
+color: #277bc0;
+font-weight: bold;
 `
 
 const TextBox = styled.div`
 position: relative;
 border-top: none;
-width: 350px;
+width: 100%;
 display: grid;
 gap: 1px;
 height: 120px;
@@ -50,6 +64,15 @@ border-bottom-right-radius:10px;
 z-index: 5;
 background-color: white;
 
+& .create-date {
+    position: absolute;
+    top: 70%; left: 10%;
+    width: 80%;
+    font-size: 12px;
+    text-align: start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 `
 const ProflieImg= styled.img`
 position: absolute;
@@ -71,12 +94,15 @@ font-size: 14px;
 
 `
 const SubTitle = styled.div`
+width: 80%;
 position: absolute;
-top: 50%;
+top: 45%;
 left: 10%;
 font-size: 19px;
 font-weight: 600;
-
+text-align: start;
+overflow: hidden;
+text-overflow: ellipsis;
 `
 const BottomBox = styled.div`
 height: 100px;

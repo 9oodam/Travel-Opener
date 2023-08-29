@@ -3,34 +3,64 @@ import styled, { keyframes } from "styled-components";
 const Main = styled.div`
   width: 70%;
   min-width: 600px;
+  /* height: calc(100vh - 90px); */
   height: auto;
   margin: auto;
-  padding: 50px 0 0 0;
-  border: 1px solid;
+  padding: 50px 0 40px 0;
+
+  & .writer-box {
+    width: 600px; height: 70px;
+    display: flex; align-items: center;
+    padding: 0 5px 0 5px;
+    box-sizing: border-box;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  & .writer-box .nickname {
+    font-weight: bold;
+    font-size: 18px;
+    margin: 0 0 0 10px;
+  }
+  & .writer-box .profile_img {
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+  & .writer-box .profile_img img {
+    width: 100%;
+  }
 
   & .btnBox {
-    border: 1px solid;
     display: flex; justify-content: center;
+    margin: 0 0 10px 0;
   }
 `;
 
 // header
 const HeaderDivPc = styled.div`
-  width: 100%;
+  width: 600px;
   height: 50px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  border: 1px solid;
   position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: 1px solid silver;
 
   & .likeBtn {
     width: 30px;
     height: 30px;
     position: absolute;
-    right: 40px;
+    left: 20px;
     cursor: pointer;
+  }
+  & .likesNum {
+    position: absolute;
+    left: 50px;
   }
   & .dotBox {
     position: absolute;
@@ -42,12 +72,28 @@ const HeaderDivPc = styled.div`
     position: relative;
     border-radius: 10px;
     z-index: 20;
-    top: 30%; right: -70px;
-    display: flex;
+    top: 20px; right: -75px;
+    display: flex; flex-direction: column;
     justify-content: center;
+    align-items: center;
   }
-  & .dotBox .editDel button {
+  & .dotBox .dotBoxBtn {
     cursor: pointer;
+    width: 50px;
+    height: 30px;
+    background-color: white;
+    border-radius: 5px;
+    border: none;
+    margin: 5px 0 5px 0;
+    display: flex; justify-content: center; align-items: center;
+  }
+  & .dotBox .editBtn:hover {
+    transform: scale(103%);
+    background-color: lightblue;
+  }
+  & .dotBox .delBtn:hover {
+    transform: scale(103%);
+    background-color: lightcoral;
   }
 `
 const LikeSize2 = styled.img`
@@ -64,19 +110,24 @@ const ImgBoxContainer = styled.div`
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+  border-radius: 10px;
 `;
 const ImgBox = styled.div`
   /* 나중에 이미지를 넣게 된다면 width를 100%만 주고 height는 안줌  */
-  width: 1800px;
+  width: auto;
   height: 300px;
   background-color: beige;
   display: flex;
   transition: transform 0.3s ease;
 `;
-const Image = styled.img`
+const Image = styled.div`
   width: 600px;
   height: 300px;
-  overflow-y: hidden;
+  display: flex; align-items: center;
+
+  & img {
+    width: 100%; height: auto;
+  }
 `;
 const ImageBtnPre = styled.button`
   position: absolute;
@@ -113,7 +164,6 @@ const TitleStyle = styled.div`
   display: flex;
   justify-content: center;
   margin: 10px 0 0 0;
-  border: 1px solid;
 `;
 const SubContentStyle = styled.div`
   box-sizing: border-box;
@@ -122,13 +172,12 @@ const SubContentStyle = styled.div`
   float: none;
   font-weight: 500;
   white-space: pre-line;
-  padding: 20px 30px 0px;
+  padding: 20px 30px 20px;
   font-size: 16px;
   line-height: 1.62;
   letter-spacing: 0px;
   display: flex;
   justify-content: center;
-  border: 1px solid;
 `;
 const Popup = styled.div`
   position: fixed;
@@ -219,31 +268,47 @@ const imgStyle = {
 
 const CommentContainer = styled.div`
   width: 600px;
-  height: 400px;
+  height: auto;
+  min-height: 200px;
   position: relative;
   margin: auto;
   display: flex;
   justify-content: center;
-  border: 1px solid;
+
+  & .comment-show-box {
+    border: 1px solid;
+  }
 `;
+const CommentMainPc = styled.div`
+  width: 100%;
+  height: auto;
+  position: relative;
+
+  & .reply-input-box {
+    height: 50px;
+    display: flex;
+    padding: 0 0 0 40px;
+    box-sizing: border-box;
+}
+`
 const CommentFormdiv = styled.div`
   list-style: none;
-  width: 500px;
+  width: 600px;
   height: 40px;
   border-top: 2px solid;
   border-color: rgb(239, 239, 239);
-  position: absolute;
-  bottom: 0%;
   display: flex;
   justify-content: space-between;
   justify-content: center;
   align-items: center;
+  position: fixed; bottom: 0;
+  background-color: white;
 `;
 const CommentInput = styled.input`
-  width: 500px;
+  width: 600px;
   height: 38px;
   border: none;
-  padding: 0 40px 0 10px;
+  padding: 0 50px 0 10px;
   outline: none;
   box-sizing: border-box;
 `;
@@ -258,6 +323,12 @@ const CommentBtn = styled.button`
   right: 0;
   top: 50%;
   transform: translateY(-50%);
+  width: 40px;
+  cursor: pointer;
+
+  &:hover {
+    font-size: 16px;
+  }
 `;
 
 export {
@@ -281,7 +352,9 @@ export {
   BoardPlanContainer,
   AddStyle,
   imgStyle,
+
   CommentContainer,
+  CommentMainPc,
   CommentFormdiv,
   CommentInput,
   CommentBtn,

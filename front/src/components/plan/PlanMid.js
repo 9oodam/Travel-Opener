@@ -14,6 +14,7 @@ const PlanMid = (props) => {
     page,
     setnearPlace,
     selectedPlanIndex,
+    userChoiceSaved,
   } = props;
   let lat, lng;
   const [distance, setDistance] = useState({ total: "", isAlert: false });
@@ -257,6 +258,110 @@ const PlanMid = (props) => {
           //     title: "Marker",
           //   });
           // });
+        }
+        // 마이 페이지에서 눌러서 넘어갔을 떄의 플랜을 보여줌
+        else if (userChoiceSaved !== "" && userChoiceSaved !== undefined) {
+          console.log(selectedPlanIndex, "유저 초이스 세이브 플랜 미드");
+          // 해당 날짜에 해당하는 인덱스
+          const index = userChoiceSaved.findIndex(
+            (ele) => Number(ele[0].day) === Number(selectedPlanIndex)
+          );
+          const plan = userChoiceSaved[index];
+          console.log(plan);
+          let lat = [];
+          let lng = [];
+          for (let i = 0; i < plan.length; i++) {
+            lat.push(Number(plan[i].lat));
+            lng.push(Number(plan[i].lng));
+          }
+
+          // --------------------------------------------------------------
+          // let lat_lng = [[40.7614, -73.9776], [40.7851, -73.9683]];
+          map = new window.google.maps.Map(document.getElementById("gmp-map"), {
+            zoom: 4,
+            // center 안에 있는 위도와 경도는 지도가 초기화될 때 보여지는 초기 중앙 위치를 설정
+            // center: { lat: 36.5, lng: 127.75 }, 한국
+            // center: { lat: 37.0902, lng: -95.7129 }, //미국
+          });
+          const directionsService = new window.google.maps.DirectionsService();
+          const directionsRenderer = new window.google.maps.DirectionsRenderer({
+            draggable: true,
+            map,
+            panel: document.getElementById("panel"),
+          });
+
+          directionsRenderer.addListener("directions_changed", () => {
+            const directions = directionsRenderer.getDirections();
+
+            if (directions) {
+              computeTotalDistance(directions);
+            }
+          });
+
+          displayRoute(
+            { lat: lat[0], lng: lng[0] }, // 시작
+            { lat: lat.at(-1), lng: lng.at(-1) }, // 종료
+            directionsService,
+            directionsRenderer
+          );
+
+          function displayRoute(origin, destination, service, display) {
+            const getWayPoints = () => {
+              const temp = lat.map((value, index) => {
+                if (index !== 0 && index !== lat.length - 1) {
+                  return { location: { lat: lat[index], lng: lng[index] } };
+                }
+              });
+
+              if (temp.length === 1 || temp.length === 2) {
+                return [];
+              } else {
+                temp.shift();
+                temp.pop();
+                return temp;
+              }
+            };
+            service
+              .route({
+                origin: origin,
+                destination: destination,
+                waypoints: getWayPoints(),
+                travelMode: window.google.maps.TravelMode.WALKING,
+                /*
+      DRIVING: 자동차로 이동.
+      WALKING: 보행자로 이동.
+      BICYCLING: 자전거로 이동.
+      TRANSIT: 대중교통을 이용하여 이동.
+      */
+                avoidTolls: true,
+              })
+              .then((result) => {
+                display.setDirections(result);
+              })
+              .catch((e) => {
+                alert("Could not display directions due to: " + e);
+              });
+          }
+
+          function computeTotalDistance(result) {
+            let total = 0;
+            const myroute = result.routes[0];
+
+            if (!myroute) {
+              return;
+            }
+
+            for (let i = 0; i < myroute.legs.length; i++) {
+              total += myroute.legs[i].distance.value;
+            }
+
+            total = total / 1000;
+            const temp = { ...distance };
+            temp.total = total + " km";
+            temp.isAlert = true;
+            setDistance(temp);
+            // document.getElementById("total").innerHTML = total + " km";
+          }
         }
       }
     },

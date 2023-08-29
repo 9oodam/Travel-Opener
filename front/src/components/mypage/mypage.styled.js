@@ -111,6 +111,7 @@ const ProfileName = styled.div`
 `;
 const TabMain = styled.div`
   position: absolute;
+  width: 100%;
   height: calc(100vh - 40% - 60px);
   top: 40%;
 `;
@@ -120,7 +121,7 @@ const TabsContainer = styled.div`
 `;
 
 const TabButton = styled.button`
-  width: 100px;
+  width: 33.3333333%;
   background-color: ${(props) => (props.active ? 'white' : 'white')};
   color: #676767;
   padding: 10px 20px;

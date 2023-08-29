@@ -34,8 +34,8 @@ const Button = styled.div`
 `;
 
 const StyledProfileImg = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: white;
   border: 2px solid #277bc0;
@@ -104,8 +104,8 @@ const EditNavigate = styled.div`
 `;
 
 const ProflieImg = styled.div`
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: #ffd8de;
   position: absolute;  
@@ -144,7 +144,7 @@ const TabsContainer = styled.div`
 `;
 
 const TabButton = styled.button`
-  width: 25%;
+  width: 33.33333333%;
   background-color: ${(props) => (props.active ? "white" : "white")};
   color: #676767;
   padding: 10px 20px;

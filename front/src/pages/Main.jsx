@@ -9,6 +9,9 @@ import MainMid from "../components/main/MainMid";
 import MainBottom from "../components/main/MainBottom";
 import { useNavigate } from "react-router-dom";
 import { resetSelectedUserPlan } from "../redux/features/selectedUserPlan";
+import { ipUrl } from "../util/util";
+import { useQuery } from "react-query";
+import { saveUser } from "../redux/features/useInfo";
 const Main = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
@@ -37,6 +40,7 @@ const Main = () => {
   // 옵션 선택
   const [isChoiced, setChoice] = useState(false);
 
+  
   // 지역 검색
   const locationSearched = (lo) => {
     if (lo == undefined) {
@@ -94,9 +98,12 @@ const Main = () => {
     }
   }, []);
 
+
+
   useEffect(() => {
     dispatch(resetSelectedUserPlan());
     dispatch(resetAttractionsWithImg())
+    
   }, []);
   return (
     <>

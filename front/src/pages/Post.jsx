@@ -4,6 +4,7 @@ import { Main,MoveBoardBtn } from '../components/boarddetail/boarddetail.styled'
 import { PostContent, PostTitle, PostBtn } from '../components/post/post.style';
 import { PostPlan, ImgUpload } from '../components/post';
 import { ipUrl } from '../util/util';
+import TopNav from '../components/nav/TopNav'
 
 const Post = () => {
   const [title, setTitle] = useState('');
@@ -62,8 +63,8 @@ const Post = () => {
     navigate("/board")
   }
   return (
-    <div>
-        <MoveBoardBtn onClick={MoveBoardClick}>게시판으로 이동</MoveBoardBtn>
+    <>
+      <TopNav />
       <Main>
         <ImgUpload name="images" onUpload={handleFileUpload} files={uploadedFiles} />
         <PostTitle
@@ -78,11 +79,10 @@ const Post = () => {
           placeholder="내용을 입력하세요"
           onChange={handleDetailChange}
         />
-        <PostPlan />
         <PostBtn onClick={handlePostSubmit}>등록하기</PostBtn>
         
       </Main>
-    </div>
+    </>
   );
 };
 

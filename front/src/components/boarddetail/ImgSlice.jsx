@@ -9,7 +9,7 @@ import { ipUrl } from '../../util/util';
 const imgPath = '/imgs/userplanimg'
 
 
-const ImgSlice = () => {
+const ImgSlice = ({images}) => {
   const { id } = useParams();
   
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -38,13 +38,18 @@ const imgArr = JSON.parse(data.data.images)
 
   return (
     <div>
-      {data && <ImgBoxContainer>
+      {data &&
+      <ImgBoxContainer>
         <ImageBtnPre onClick={prevImage}>◀️</ImageBtnPre>
         <ImgBox style={{ transform: `translateX(-${currentImageIndex * (100 / imgArr.length)}%)` }}>
           {imgArr.map((image, index) => (
-            <div>
-              <Image key={index} src={imgPath+"/"+image} alt={`Image ${index + 1}`} />
-            </div>
+              <Image>
+                <img
+                  key={index}
+                  src={`${imgPath}/${image}`}
+                  alt={`Image ${index + 1}`}
+                />
+              </Image>
           ))}
         </ImgBox>
         <ImageBtnNext onClick={nextImage}>▶️</ImageBtnNext>

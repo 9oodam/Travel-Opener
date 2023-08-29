@@ -1,4 +1,4 @@
-const { User, Board, Comment, Recomment } = require("../models")
+const { User, Board, Comment, Recomment, LikeBoard, LikeComment } = require("../models")
 
 // 글 리스트를 보여줄 수 있는 컨트롤러
 exports.allBoard = async (req, res) => {
@@ -30,58 +30,65 @@ exports.allBoard = async (req, res) => {
 
 // 글 작성 컨트롤러
 exports.createBoard = async (req, res) => {
-    const { title, detail } = req.body
-    const userId = req.decoded
-    const UserFront_id = userId.front_id
-    const userinfo = await User.findOne({ where: { user_id: UserFront_id } })
-    const usernick = userinfo.nickname
-    const userID = userinfo.id
-    const tempImgArr = req.files.map((img) => {
-        return img.filename
-    })
-
-    const imgFiles = JSON.stringify(tempImgArr)
-
-
-    // const { filename } = req.file
-    await Board.create({
+    try {
+      const { title, detail } = req.body;
+      const userId = req.decoded;
+      const UserFront_id = userId.front_id;
+      const userinfo = await User.findOne({ where: { user_id: UserFront_id } });
+      const usernick = userinfo.nickname;
+      const userID = userinfo.id;
+      const tempImgArr = req.files.map((img) => {
+        return img.filename;
+      });
+  
+      const imgFiles = JSON.stringify(tempImgArr);
+  
+      // const { filename } = req.file
+      await Board.create({
         title: title,
         detail: detail,
         images: imgFiles,
         likes: 0,
         views: 0,
         nickname: usernick,
-        user_id: userID
-
-    })
-    res.send("create success")
-}
-
+        user_id: userID,
+      });
+      res.send("create success");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 // 상세페이지
 exports.detailBoard = async (req, res) => {
     const { id } = req.params
-    const data = await Board.findOne({ where: { id: id } });
-    const commentdata = await Comment.findAll({ where: { board_id: id }, include: [{ model: Recomment }, { model: User }] })
+    
+    const data = await Board.findOne({ where: { id: id } , include:[{model:LikeBoard}] });
+    const writer = await User.findOne({where : {id : data.user_id}})
+
+    data.dataValues.LikeBoards=data.dataValues.LikeBoards.map((value)=>{
+        return value.dataValues.user_id
+    })
+
+    console.log(data, '뉴커멘')
+    const commentdata = await Comment.findAll({ where: { board_id: id }, include: [{ model: Recomment }, { model: User },{model:LikeComment}] })
     const newComment = commentdata.map((value) => {
-        console.log(value.User.dataValues.nickname, '뉴커멘asdawrwqrqw')
-        return { ...value.dataValues, User: value.User.dataValues.nickname, Img: value.User.dataValues.profile_img }
+         const temp=value.LikeComments.map((ele)=>{
+            return ele.dataValues.user_id
+         })
+        return { ...value.dataValues, User: value.User.dataValues.nickname, Img: value.User.dataValues.profile_img,LikeComments:temp }
     })
    const realNewComment=newComment.map( async(value)=>{
            const recommentdata = await Recomment.findAll({ where: { comment_id: value.id },include: [{ model: User }] })
           
-          console.log(recommentdata,'리코만토오오')
            const newReComment = recommentdata.map((revalue) => {
             //    console.log(revalue.dataValues, 'revaluesdsdsds')
                return { ...revalue.dataValues,User: revalue.User.dataValues.nickname, Img: revalue.User.dataValues.profile_img }
            })
-           console.log(newReComment,'뉴리코맨트')
-           console.log(value,'뉴리코맨트ㅍㅍㅍㅍ')
            return {...value,Recomments:newReComment}
        
    })
    const realRealNewComment=await Promise.all(realNewComment)
-    console.log(realRealNewComment, '뉴커멘')
-    res.json({ data, commentdata: realRealNewComment,realNewComment })
+    res.json({ data:data.dataValues, commentdata: realRealNewComment,realNewComment, writer:writer })
     // res.json({data,commentdata,recommentArr});
 
 

@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "react-query";
+
+import { ipUrl } from "../util/util";
+
+import { saveUser } from "../redux/features/useInfo";
 
 import styled, { keyframes } from "styled-components";
 import "animate.css";
@@ -52,6 +57,29 @@ const Main = () => {
   // 옵션 선택
   const [isChoiced, setChoice] = useState(false);
   const [gptAnswer, setGptAnswer] = useState("");
+
+  // 현재 로그인한 유저의 정보를 가져오는 로직
+  const getLoginUserInfoHandler= async()=>{
+    
+    const getLoginUserInfo= await ipUrl.get('/user/loginUser');
+      return getLoginUserInfo.data;
+  }
+
+  // // 현재 로그인한 유저의 정보를 가져오는 로직 query
+  // const getLoginUserInfoQuery=useQuery(['getLoginUserInfoQuery'],getLoginUserInfoHandler,{
+  //   onSuccess:(data)=>{
+  //     if (data==="다시 로그인 해주세요") {
+  //       alert('현재 로그인이 안되어 있습니다. 추천된 관광지를 저장하려면 로그인 해주세요')
+  //       // console.log('asd')
+  //     }else{
+  //     console.log(data)
+  //     dispatch(saveUser(data))
+        
+  //     }
+  //   },
+  //   staleTime:5000
+  // })
+
 
   // 지역 검색
   const locationSearched = (lo) => {

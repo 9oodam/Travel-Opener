@@ -171,6 +171,7 @@ const SignupMid = ({ page }) => {
       if (loginClick.data == "login_success") {
         // 로그인 성공
         dispatch(check(user_id));
+        
         navigate("/");
       } else if (loginClick.data == "id_exist_but_pw_wrong") {
         // 비밀번호 틀렸을때
