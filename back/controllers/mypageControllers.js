@@ -17,13 +17,29 @@ exports.updateUserInfo = async (req, res) => {
   try {
     const { front_id } = req.decoded;
     const { nickname } = req.body;
-    const profileImg = req.files[0].filename;
-    console.log(req.files);
-    console.log(profileImg);
-    await User.update(
-      { nickname: nickname, profile_img: profileImg },
-      { where: { user_id: front_id } }
-    );
+    const profileImg = req.files[0]?.filename;
+    // console.log('nickname', nickname)
+    // console.log(req.files);
+    // console.log(profileImg);
+
+    if(!nickname) {
+      await User.update(
+        { profile_img: profileImg },
+        { where: { user_id: front_id } }
+      );
+    }
+    if(profileImg == undefined) {
+      await User.update(
+        { nickname: nickname },
+        { where: { user_id: front_id } }
+      );
+    }
+    if(nickname && profileImg) {
+      await User.update(
+        { nickname: nickname, profile_img: profileImg },
+        { where: { user_id: front_id } }
+      );
+    }
     res.json("success");
   } catch (error) {
     console.log(error);
@@ -34,10 +50,10 @@ exports.updateUserInfo = async (req, res) => {
 exports.getUserPlan = async (req, res) => {
   try {
     const { front_id } = req.decoded;
-    console.log(req.decoded, "디코디드");
+    // console.log(req.decoded, "디코디드");
     const user = await User.findOne({ where: { user_id: front_id } });
     const planAll = await Plan.findAll({ where: { user_id: user.id } });
-    console.log(planAll, "plannnnnnnnnn");
+    // console.log(planAll, "plannnnnnnnnn");
     res.json(planAll);
   } catch (error) {
     console.log(error);
@@ -70,7 +86,7 @@ exports.getUserComment = async (req, res) => {
         commentedReview.push(review);
       }
     }));
-    console.log(commentedReview);
+    // console.log(commentedReview);
 
     res.json(commentedReview);
   } catch (error) {
