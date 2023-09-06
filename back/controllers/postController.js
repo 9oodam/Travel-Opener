@@ -31,33 +31,34 @@ exports.allBoard = async (req, res) => {
 
 // 글 작성 컨트롤러
 exports.createBoard = async (req, res) => {
-    const { title, detail } = req.body
-    const userId = req.decoded
-    const UserFront_id = userId.front_id
-    const userinfo = await User.findOne({ where: { user_id: UserFront_id } })
-    const usernick = userinfo.nickname
-    const userID = userinfo.id
-    const tempImgArr = req.files.map((img) => {
-        return img.filename
-    })
-
-    const imgFiles = JSON.stringify(tempImgArr)
-
-
-    // const { filename } = req.file
-    await Board.create({
+    try {
+      const { title, detail } = req.body;
+      const userId = req.decoded;
+      const UserFront_id = userId.front_id;
+      const userinfo = await User.findOne({ where: { user_id: UserFront_id } });
+      const usernick = userinfo.nickname;
+      const userID = userinfo.id;
+      const tempImgArr = req.files.map((img) => {
+        return img.filename;
+      });
+  
+      const imgFiles = JSON.stringify(tempImgArr);
+  
+      // const { filename } = req.file
+      await Board.create({
         title: title,
         detail: detail,
         images: imgFiles,
         likes: 0,
         views: 0,
         nickname: usernick,
-        user_id: userID
-
-    })
-    res.send("create success")
-}
-
+        user_id: userID,
+      });
+      res.send("create success");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 // 상세페이지
 exports.detailBoard = async (req, res) => {
     const { id } = req.params

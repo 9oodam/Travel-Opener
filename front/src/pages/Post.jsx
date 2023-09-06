@@ -80,6 +80,7 @@ const Post = () => {
           onChange={handleDetailChange}
         />
         <PostBtn onClick={handlePostSubmit}>등록하기</PostBtn>
+        
       </Main>
     </>
   );

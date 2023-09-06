@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useQuery } from "react-query";
+import { saveUser } from "../../redux/features/useInfo";
 
 import { ipUrl } from "../../util/util";
 
@@ -16,6 +17,7 @@ const BottomNavPc = () => {
   const star2 = "/imgs/icons/star2.png";
   const default_profile = "/imgs/profiles/default_profile.jpeg";
   const ImgPath = "/imgs/profiles";
+  const dispatch = useDispatch();
 
   const nav = useNavigate();
 
@@ -84,6 +86,8 @@ const BottomNavPc = () => {
     try {
       const response = await ipUrl.get(`/mypage/getInfo`);
       const data = response.data;
+      dispatch(saveUser(data));
+
       return data;
     } catch (error) {
       console.log(error);
@@ -94,6 +98,7 @@ const BottomNavPc = () => {
 
   useEffect(() => {
     if (data) {
+      console.log(data, "프로필");
       if (data.profile_img) {
         setProfileImg(data.profile_img);
       }
@@ -111,31 +116,44 @@ const BottomNavPc = () => {
           <img src={icons.plan}></img>
           <BottomNavText textCol={textCol.plan}>일정</BottomNavText>
         </BottomNavBtn>
-        <BottomNavBtn onClick={() => nav("/board")}>
+        <BottomNavBtn
+          onClick={() => {
+            if (data !== "expired token") {
+              nav("/board");
+            } else {
+              alert("로그인을 먼저 진행해주세요");
+            }
+          }}
+        >
           <img src={icons.star}></img>
           <BottomNavText textCol={textCol.star}>리뷰</BottomNavText>
         </BottomNavBtn>
 
         {/* 로그인 된 유저 -> 마이페이지 */}
-        {userOrGuest.isLogin && (
+        {data !== "expired token" && (
           <BottomNavBtn onClick={() => nav("/mypage")}>
             {!isLoading && (
               <img
                 src={`${ImgPath}/${profileImg}`}
                 className="profile_img"
+                alt="프로필 이미지"
               ></img>
             )}
             <BottomNavText textCol={textCol.my}>마이페이지</BottomNavText>
           </BottomNavBtn>
         )}
         {/* 게스트 -> 로그인 페이지 */}
-        {!userOrGuest.isLogin && (
+        {data === "expired token" && (
           <BottomNavBtn
             onClick={() => {
               nav("/login");
             }}
           >
-            <img src={default_profile} className="profile_img"></img>
+            <img
+              src={default_profile}
+              className="profile_img"
+              alt="프로필 이미지"
+            ></img>
             <BottomNavText>로그인</BottomNavText>
           </BottomNavBtn>
         )}

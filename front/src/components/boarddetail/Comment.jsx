@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { CommentContainer, CommentMain } from "./boarddetail.styled";
 import { CommentList, CommentForm } from "./index";
 
-const Comment = ({ comments,setTrigger,loginUserInfo,refetch }) => {
+const Comment = ({ comments, setTrigger, loginUserInfo, refetch }) => {
   console.log(comments);
 
   const CommentSubmit = () => {};
@@ -10,7 +10,12 @@ const Comment = ({ comments,setTrigger,loginUserInfo,refetch }) => {
     <>
       <CommentContainer>
         <CommentMain>
-          <CommentList comments={comments} loginUserInfo={loginUserInfo}  refetch={refetch}/>
+          <CommentList
+            comments={comments}
+            loginUserInfo={loginUserInfo}
+            refetch={refetch}
+            setTrigger={setTrigger}
+          />
         </CommentMain>
         <CommentForm onCommentSubmit={CommentSubmit} setTrigger={setTrigger} />
       </CommentContainer>

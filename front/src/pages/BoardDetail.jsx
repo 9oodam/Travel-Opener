@@ -13,7 +13,7 @@ import {
   HeaderDiv,
   EditBtnStyle,
   DelBtnStyle,
-  SubContentSpan
+  SubContentSpan,
 } from "../components/boarddetail/boarddetail.styled";
 import {
   ImgSlice,
@@ -40,7 +40,7 @@ const BoardDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const loginUserInfo=useSelector((state)=>state.userInfoHandler);
+  const loginUserInfo = useSelector((state) => state.userInfoHandler);
   const ImgPath = "/imgs/icons";
 
   const boardEditClick = () => {
@@ -52,19 +52,18 @@ const BoardDetail = () => {
       const response = await ipUrl.get(`/post/detail/${queryKey[1]}`);
       // setData(response.data);
       console.log("fffff", response.data);
-      const data = response.data
-      console.log("66666666666", data.data)
+      const data = response.data;
+      console.log("66666666666", data.data);
       return data;
     } catch (error) {
       console.log(error);
     }
   };
-  
+
   const { data, isLoading, refetch } = useQuery(
     ["boardDetail", id],
     BoardDetailView
   );
-
 
   const boardDelet = async () => {
     try {
@@ -94,7 +93,8 @@ const BoardDetail = () => {
   }, [data]);
 
   useEffect(() => {
-    refetch()
+    refetch();
+    console.log('ddd몹')
   }, [trigger]);
 
   const DayBtnClick = () => {
@@ -110,45 +110,55 @@ const BoardDetail = () => {
   return (
     <>
       <TopNav />
-      {data && <>
-      <Main>
+      {data && (
+        <>
+          <Main>
+            <HeaderDiv>
+              <BoardLikes
+                boardIndex={data.data.id}
+                boardLikeArr={data.data.LikeBoards}
+                loginUserInfo={loginUserInfo}
+                refetch={refetch}
+              />
+              <div className="likesNum">{data.data.LikeBoards.length}</div>
 
-        <HeaderDiv>
-          <BoardLikes boardIndex={data.data.id} boardLikeArr={data.data.LikeBoards}  loginUserInfo={loginUserInfo} refetch={refetch}/>
-          <div className='likesNum'>{data.data.LikeBoards.length}</div>
+              {loginUserInfo.id === data.data.user_id && (
+                <ButtonBox onClick={ShowboxClick}>
+                  <EditImg src={`${ImgPath}/more.png`} alt="" srcset="" />
+                </ButtonBox>
+              )}
+              {showBox && (
+                <ShowButtonBox onClose={() => setShowBox(false)}>
+                  <EditBtnStyle onClick={boardEditClick}>수정</EditBtnStyle>
+                  <DelBtnStyle onClick={handleDeleteCheck}>삭제</DelBtnStyle>
+                </ShowButtonBox>
+              )}
+            </HeaderDiv>
 
-          {loginUserInfo.id===data.data.user_id &&
-          <ButtonBox onClick={ShowboxClick}>
-            <EditImg src={`${ImgPath}/more.png`} alt="" srcset="" />
-          </ButtonBox>}
-          {showBox && (
-            <ShowButtonBox onClose={() => setShowBox(false)}>
-                <EditBtnStyle onClick={boardEditClick}>수정</EditBtnStyle>
-                <DelBtnStyle onClick={handleDeleteCheck}>삭제</DelBtnStyle>
-            </ShowButtonBox>
-          )}
-        </HeaderDiv>
+            {/* 게시글 쓴 유저 */}
+            <div className="writer-box">
+              <div className="profile_img">
+                <img src={`/imgs/profiles/${data.writer.profile_img}`}></img>
+              </div>
+              <div className="nickname">{data.writer.nickname}</div>
+            </div>
 
-        {/* 게시글 쓴 유저 */}
-        <div className='writer-box'>
-          <div className='profile_img'>
-            <img src={`/imgs/profiles/${data.writer.profile_img}`}></img>
-          </div>
-          <div className='nickname'>{data.writer.nickname}</div>
-        </div>
+            <ImgSlice images={JSON.parse(data.data.images)} />
 
-        <ImgSlice images={JSON.parse(data.data.images)} />
-        
-        <div className="title">{data.data.title}</div>
-        <div className="detail">{data.data.detail}</div>
+            <div className="title">{data.data.title}</div>
+            <div className="detail">{data.data.detail}</div>
 
-        <Comment comments={data.commentdata} setTrigger={setTrigger}  loginUserInfo={loginUserInfo} refetch={refetch}/>
-      </Main>
+            <Comment
+              comments={data.commentdata}
+              setTrigger={setTrigger}
+              loginUserInfo={loginUserInfo}
+              refetch={refetch}
+            />
+          </Main>
 
-      <BottomNav />
-    </>
-    }
-
+          <BottomNav />
+        </>
+      )}
     </>
   );
 };

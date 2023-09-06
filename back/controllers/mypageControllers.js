@@ -5,6 +5,7 @@ exports.getUserInfo = async (req, res) => {
   try {
     const { front_id } = req.decoded;
     const user = await User.findOne({ where: { user_id: front_id } });
+    user.user_pw = "";
     res.json(user);
   } catch (error) {
     console.log(error);
@@ -62,31 +63,38 @@ exports.getUserPlan = async (req, res) => {
 
 // 로그인 유저가 쓴 게시글
 exports.getUserReview = async (req, res) => {
-    try {
-        const {front_id} = req.decoded;
-        const user = await User.findOne({where : {user_id : front_id}})
-        const reviewAll = await Board.findAll({where : {user_id : user.id}})
-        res.json(reviewAll);
-    } catch (error) {
-        console.log(error);
-    }
-}
+  try {
+    const { front_id } = req.decoded;
+    const user = await User.findOne({ where: { user_id: front_id } });
+    const reviewAll = await Board.findAll({ where: { user_id: user.id } });
+    res.json(reviewAll);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // 로그인 유저가 댓글 쓴 게시글
 exports.getUserComment = async (req, res) => {
   try {
     const { front_id } = req.decoded;
     const user = await User.findOne({ where: { user_id: front_id } });
-    const commentAll = await Comment.findAll({ where: { user_id: user.id } }); 
+    const commentAll = await Comment.findAll({ where: { user_id: user.id } });
     const commentedReview = [];
 
-    await Promise.all(commentAll.map(async (value, index) => {
-      const review = await Board.findOne({ where: { id: value.board_id } });
-      if (review && !commentedReview.some(existingReview => existingReview.id === review.id)) {
-        commentedReview.push(review);
-      }
-    }));
-    // console.log(commentedReview);
+    await Promise.all(
+      commentAll.map(async (value, index) => {
+        const review = await Board.findOne({ where: { id: value.board_id } });
+        if (
+          review &&
+          !commentedReview.some(
+            (existingReview) => existingReview.id === review.id
+          )
+        ) {
+          commentedReview.push(review);
+        }
+      })
+    );
+    console.log(commentedReview);
 
     res.json(commentedReview);
   } catch (error) {

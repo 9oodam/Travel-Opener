@@ -10,7 +10,6 @@ exports.loginClick = async (req, res) => {
     const front_id = req.body.user_id;
     const front_pw = req.body.user_pw;
 
-
     const useridExist = await User.findOne({ where: { user_id: front_id } });
     if (useridExist == null) {
       res.json("id_non-existent");
@@ -30,8 +29,15 @@ exports.loginClick = async (req, res) => {
             expiresIn: "2h",
           }
         );
-        req.session.access_token = token;
-        res.json("login_success");
+        // req.session.access_token = token;
+        console.log(req.sessionID, "loggg");
+        res
+          .cookie("access_token", token, {
+            httpOnly: true, //XSS공격을 막기위해 추가로 설정한 것
+            sameSite: "None",
+            secure: true,
+          })
+          .json("login_success");
         // 프론트쪽에서 받아서 화면 전환시킬것.
       } else {
         res.json("id_exist_but_pw_wrong");
@@ -41,6 +47,6 @@ exports.loginClick = async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-//   YdgmudAHhYIO5cV6QcHOly8jkCJYIX6h
-// n4-oGmlvYaMiqu3q2CTIkEVxCLbCxANe
+  //   YdgmudAHhYIO5cV6QcHOly8jkCJYIX6h
+  // n4-oGmlvYaMiqu3q2CTIkEVxCLbCxANe
 };

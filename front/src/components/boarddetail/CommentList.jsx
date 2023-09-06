@@ -28,7 +28,7 @@ import LikesBtn from "./LikesBtn";
 import { ipUrl } from "../../util/util";
 import { useSelector } from "react-redux";
 
-const CommentList = ({ comments, loginUserInfo,refetch }) => {
+const CommentList = ({ comments, loginUserInfo, refetch, setTrigger }) => {
   const [replies, setReplies] = useState([]);
   const [replyText, setReplyText] = useState("");
   const [activeCommentIndex, setActiveCommentIndex] = useState(null);
@@ -40,17 +40,17 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
   const ImgPath = "/imgs/icons";
   console.log("ddddd", loginUserInfo);
 
-  const CommentView = async () => {
-    try {
-      const response = await ipUrl.get(`/post/commentlist`);
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const CommentView = async () => {
+  //   try {
+  //     const response = await ipUrl.get(`/post/commentlist`);
+  //     console.log(response);
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
-  const { data, isLoading } = useQuery(["boardDetail", id], CommentView);
+  // const { data, isLoading } = useQuery(["boardDetail", id], CommentView);
 
   const CommentEdit = async ({ commentIndex }) => {
     try {
@@ -104,15 +104,15 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
   //======================================
   // 대댓글
 
-  // 대댓글 보이기
-  const ReCommentView = async () => {
-    try {
-      const response = await ipUrl.get(`/post/recommentlist`);
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // // 대댓글 보이기
+  // const ReCommentView = async () => {
+  //   try {
+  //     const response = await ipUrl.get(`/post/recommentlist`);
+  //     return response;
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   // 대댓글 삭제
   const ReCommentDelete = async (replyIndex) => {
@@ -155,13 +155,19 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
         setReplyText("");
         setActiveCommentIndex(null);
         setIsReplyVisible(false);
+        setTrigger((state) => {
+          return !state;
+        });
       } catch (error) {
         console.error("대댓글 오류:", error);
       }
     }
   };
 
-  const { data2, isLoading2 } = useQuery(["boardDetail", id], ReCommentView);
+  const handleReplySubmitMutation = useMutation(
+    ["recommentSubmit"],
+    handleReplySubmit
+  );
 
   const handleCancelReply = () => {
     setReplyText("");
@@ -205,7 +211,12 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
                 </RelpyBtndiv>
               </div>
             </CommentContain2>
-            <LikesBtn comments={comments[commentIndex]} commentIndex={comment.id} loginUserInfo={loginUserInfo}  refetch={refetch}/>
+            <LikesBtn
+              comments={comments[commentIndex]}
+              commentIndex={comment.id}
+              loginUserInfo={loginUserInfo}
+              refetch={refetch}
+            />
             <div>
               {editInputIndex === comment.id && (
                 <InputContain onClose={inputDelClick}>
@@ -229,19 +240,22 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
               )}
             </div>
             <div>
-              {data && (
+              {comment && (
                 <>
                   {loginUserInfo.id === comment.user_id && (
-                      <CommentEditImg
-                        onClick={() => toggleShowBox(commentIndex)}
-                        src={`${ImgPath}/more.png`}
-                      />
+                    <CommentEditImg
+                      onClick={() => toggleShowBox(commentIndex)}
+                      src={`${ImgPath}/more.png`}
+                    />
                   )}
                 </>
               )}
             </div>
             {expandedCommentIndex === commentIndex && (
-              <ShowButtonBox2 onClose={() => toggleShowBox(commentIndex)} right={'30px'}>
+              <ShowButtonBox2
+                onClose={() => toggleShowBox(commentIndex)}
+                right={"30px"}
+              >
                 <div>
                   <HandleEditCheck onClick={() => handleEditCheck(comment.id)}>
                     수정
@@ -263,10 +277,12 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
                 placeholder="대댓글을 입력해주세요"
                 value={replyText}
                 onChange={(e) => setReplyText(e.target.value)}
-                width={'150px'}
+                width={"150px"}
               />
               <RelpyBtn
-                onClick={() => handleReplySubmit({ commentIndex: comment.id })}
+                onClick={() =>
+                  handleReplySubmitMutation.mutate({ commentIndex: comment.id })
+                }
               >
                 등록
               </RelpyBtn>
@@ -283,7 +299,7 @@ const CommentList = ({ comments, loginUserInfo,refetch }) => {
                     <div>{value.User}</div>
                     {value.detail}
                   </Reasd>
-                  {data && (
+                  {comment && (
                     <>
                       {loginUserInfo.id === value.user_id && (
                         <Xbtn onClick={() => handleReCommentDelete(value.id)}>

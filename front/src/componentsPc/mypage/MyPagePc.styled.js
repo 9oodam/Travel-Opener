@@ -34,8 +34,8 @@ const Button = styled.div`
 `;
 
 const StyledProfileImg = styled.div`
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: white;
   border: 2px solid #277bc0;
@@ -104,8 +104,8 @@ const EditNavigate = styled.div`
 `;
 
 const ProflieImg = styled.div`
-  width: 130px;
-  height: 130px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: #ffd8de;
   position: absolute;  

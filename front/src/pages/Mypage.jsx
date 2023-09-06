@@ -52,18 +52,28 @@ const Mypage = () => {
   return (
     <>
       <Main>
-        <button
-          onClick={() => {
-            logoutMutation.mutate();
-          }}
-        >
-          로그아웃
-        </button>
         <MoveEdit />
         {!isLoading && (
           <>
             <MypageImg profile_img={data.profile_img} />
             <MypageName nickname={data.nickname} />
+            <button
+              style={{
+                position: "absolute",
+                top: "33%",
+                left: "50%",
+                transform: "translate(-50%, 0)",
+                backgroundColor: "white",
+                color: "#277bc0",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                logoutMutation.mutate();
+              }}
+            >
+              로그아웃
+            </button>
           </>
         )}
         <TapMenu user={data} />

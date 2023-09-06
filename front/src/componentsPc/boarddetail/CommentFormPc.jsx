@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { ipUrl } from "../../util/util";
 
-import { CommentFormdiv,CommentInput,CommentBtn } from './boarddetailPc.styled'
-
+import {
+  CommentFormdiv,
+  CommentInput,
+  CommentBtn,
+} from "./boarddetailPc.styled";
+import { useMutation } from "react-query";
 
 const CommentFormPc = ({ onCommentSubmit, setTrigger }) => {
   const [inputComment, setInputComment] = useState("");
@@ -31,23 +35,25 @@ const CommentFormPc = ({ onCommentSubmit, setTrigger }) => {
       console.log(error);
     }
   };
+  const handleSubmitMutation = useMutation("commentSubmitPc", handleSubmit);
 
   return (
     <>
-    <CommentFormdiv>
-        <form onSubmit={handleSubmit}>
-            <span>
-            <CommentInput 
-                type="text"
-                value={inputComment}
-                onChange={(e)=>setInputComment(e.target.value)}
-                placeholder='댓글을 입력해주세요' />
-            <CommentBtn>등록</CommentBtn>
-            </span>
-        </form>
-    </CommentFormdiv>
+      <CommentFormdiv>
+        <span>
+          <CommentInput
+            type="text"
+            value={inputComment}
+            onChange={(e) => setInputComment(e.target.value)}
+            placeholder="댓글을 입력해주세요"
+          />
+          <CommentBtn onClick={(e) => handleSubmitMutation.mutate(e)}>
+            등록
+          </CommentBtn>
+        </span>
+      </CommentFormdiv>
     </>
-  )
-}
+  );
+};
 
-export default CommentFormPc
+export default CommentFormPc;
