@@ -7,7 +7,9 @@ const path = require("path");
 // Multer 설정
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, path.join("..",'front', "public","imgs","userplanimg"));
+      // cb(null, path.join("..",'front', "public","imgs","userplanimg"));
+      // cb(null, path.join("__dirname", "..", "..", "front", "public", "imgs", "profiles"));
+      cb(null, path.join("__dirname", "..", "..", "front", "build", "imgs", "profiles"));
     },
     filename: function (req, file, cb) {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
