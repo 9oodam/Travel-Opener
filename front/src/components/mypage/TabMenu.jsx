@@ -114,7 +114,8 @@ const TapMenu = ({ user }) => {
             </TabButton>
           ))}
         </TabsContainer>
-
+        
+        {data &&        
         <Content>
           {tabArr[tab].content.map((value, index) => {
             if (tab == 0) {
@@ -171,6 +172,7 @@ const TapMenu = ({ user }) => {
             }
           })}
         </Content>
+        }
       </TabMain>
     </div>
   );
